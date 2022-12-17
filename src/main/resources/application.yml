@@ -1,1 +1,11 @@
-
+spring:
+  application:
+    name: searchframe
+  output:
+    ansi:
+      enabled: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: none
+  profiles:
+    active: dev
