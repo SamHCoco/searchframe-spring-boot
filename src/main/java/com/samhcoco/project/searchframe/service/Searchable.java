@@ -5,18 +5,22 @@ import com.samhcoco.project.searchframe.model.Query;
 
 import java.util.Collection;
 
-public interface SearchService<T> {
+/**
+ * For services which allow queries (database searches) on their entity may be performed.
+ * @param <T> The entity class.
+ */
+public interface Searchable<T> {
 
     /**
-     * Queries a datasource and returns the results.
+     * Queries products based on the provided {@link Query}.
      * @param query {@link Query}.
      * @return Query result.
      */
     Collection<T> query(Query query);
 
     /**
-     * A method for performing more complex queries by combining {@link Query} conditions.
-     * @param queries {@link Query}.
+     * Performs more complex searching using {@link Queries}.
+     * @param queries {@link Queries}.
      * @return Query result.
      */
     Collection<T> query(Queries queries);

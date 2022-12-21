@@ -1,4 +1,4 @@
-package com.samhcoco.project.searchframe.constants;
+package com.samhcoco.project.searchframe.constant;
 
 public abstract class SearchOperations {
     public final static String EQUAL = "==";

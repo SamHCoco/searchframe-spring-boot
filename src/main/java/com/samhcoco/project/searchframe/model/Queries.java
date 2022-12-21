@@ -6,10 +6,10 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
-public class Query {
-    private List<SearchCriteria> searchCriteria;
+public class Queries {
+    private List<Query> queries;
     private boolean strict;
 }

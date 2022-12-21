@@ -12,7 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import static com.samhcoco.project.searchframe.constants.SearchOperations.*;
+import static com.samhcoco.project.searchframe.constant.SearchOperations.*;
 
 @Slf4j
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class SpecificationBuilder<T> implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        val searchCriteria = searchQuery.getSearchList();
+        val searchCriteria = searchQuery.getSearchCriteria();
         if (searchCriteria.isEmpty()) return null;
 
         val predicates = new Predicate[searchCriteria.size()];
@@ -47,8 +47,12 @@ public class SpecificationBuilder<T> implements Specification<T> {
                 case LESS_THAN_OR_EQUAL:
                     predicates[i] = criteriaBuilder.lessThanOrEqualTo(root.get(criteria.getField()), criteria.getValue());
                     break;
+                case LIKE:
+                    // '%' used as wildcards i.e. - if the field at least contains the given value, a match is returned.
+                    predicates[i] = criteriaBuilder.like(root.get(criteria.getField()), "%" + criteria.getValue() + "%");
+                    break;
                 default:
-                    log.debug("Required valid search operation missing for search query: {}", searchQuery);
+                    log.error("Required valid search operation missing for search query: {}", searchQuery);
 
             }
         }
