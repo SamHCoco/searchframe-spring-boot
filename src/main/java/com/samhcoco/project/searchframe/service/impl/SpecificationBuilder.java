@@ -14,6 +14,10 @@ import javax.persistence.criteria.Root;
 
 import static com.samhcoco.project.searchframe.constant.SearchOperations.*;
 
+/**
+ * Builds a {@link Specification} from the given {@link Query}.
+ * @param <T> Generic entity class on which the {@link Specification} is built.
+ */
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor

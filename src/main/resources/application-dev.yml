@@ -1,3 +1,6 @@
+server:
+  port: 9000
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306
@@ -7,6 +10,11 @@ spring:
   sql:
     init:
       mode: always
-
-server:
-  port: 9000
+  data:
+    mongodb:
+      authentication-database: admin
+      username: rootuser
+      password: rootpass
+      database: searchframe
+      port: 27017
+      host: localhost

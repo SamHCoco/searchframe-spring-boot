@@ -1,6 +1,9 @@
 package com.samhcoco.project.searchframe.model;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -10,9 +13,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class VehicleProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
