@@ -29,7 +29,7 @@ public class VehicleProductServiceTest {
     private Queries queries = new Queries();
 
     @Mock
-    private RdbSearchService<VehicleProduct> searchService;
+    private RdbSearchService searchService;
 
     @Before
     public void setup() {
@@ -38,26 +38,26 @@ public class VehicleProductServiceTest {
 
     @Test
     public void testQuery() {
-        when(searchService.query(any(Query.class))).thenReturn(result);
+        when(searchService.query(any(Query.class), (Class) any())).thenReturn(result);
 
         val queryResult = (List<VehicleProduct>) underTest.query(query);
 
         assertThat(queryResult.get(0)).isEqualTo(product);
         assertThat(queryResult.size()).isEqualTo(1);
 
-        verify(searchService).query(any(Query.class));
+        verify(searchService).query(any(Query.class), (Class) any());
     }
 
     @Test
     public void testQuery_queries() {
-        when(searchService.query(any(Queries.class))).thenReturn(result);
+        when(searchService.query(any(Queries.class), (Class) any())).thenReturn(result);
 
         val queryResult = (List<VehicleProduct>) underTest.query(queries);
 
         assertThat(queryResult.get(0)).isEqualTo(product);
         assertThat(queryResult.size()).isEqualTo(1);
 
-        verify(searchService).query(any(Queries.class));
+        verify(searchService).query(any(Queries.class), (Class) any());
     }
 
     @Test(expected = NullPointerException.class)

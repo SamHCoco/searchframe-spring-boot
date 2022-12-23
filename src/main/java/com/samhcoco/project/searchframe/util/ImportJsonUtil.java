@@ -15,8 +15,16 @@ public abstract class ImportJsonUtil {
 
     public static final Gson gson = new Gson();
 
-    public static <T> List<T> importJson(Resource resource, Class<T[]> className) throws IOException {
-        return Arrays.asList(gson.fromJson(readFileToString(resource.getFile(), UTF_8), className));
+    /**
+     * Converts a {@link Resource} file containing an array of JSON objects to a collection of POJOs.
+     * @param resource {@link Resource}
+     * @param clazz Array {@link Class} name.
+     * @param <T> Object type.
+     * @return Collection of <T>.
+     * @throws IOException
+     */
+    public static <T> List<T> importJson(Resource resource, Class<T[]> clazz) throws IOException {
+        return Arrays.asList(gson.fromJson(readFileToString(resource.getFile(), UTF_8), clazz));
     }
 
 }

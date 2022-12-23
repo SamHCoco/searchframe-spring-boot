@@ -1,5 +1,6 @@
 package com.samhcoco.project.searchframe.service;
 
-public interface ProductService {
+
+public interface ProductService<T> extends Searchable<T> {
 
 }

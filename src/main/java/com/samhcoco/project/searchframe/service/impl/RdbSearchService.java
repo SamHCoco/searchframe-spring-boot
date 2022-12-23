@@ -4,29 +4,46 @@ import com.samhcoco.project.searchframe.model.Queries;
 import com.samhcoco.project.searchframe.model.Query;
 import com.samhcoco.project.searchframe.service.SearchService;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+import static java.lang.String.format;
+
 /**
  * Generic service for performing search queries on relational databases.
- * @param <T> The database entity on which queries will be performed.
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
-public class RdbSearchService<T> implements SearchService<T> {
+public class RdbSearchService implements SearchService {
 
-    private final JpaSpecificationExecutor<T> executor;
+    private static final String REPOSITORY_PACKAGE = "com.samhcoco.project.searchframe.repository.";
+    private static final String REPOSITORY = "Repository";
+
+    private final BeanFactory beanFactory;
 
     @Override
-    public Collection<T> query(@NonNull Query query) {
+    public <T> Collection<T> query(@NonNull Query query, @NonNull Class<T> type) {
         val specificationBuilder = new SpecificationBuilder<T>(query);
-        return executor.findAll(specificationBuilder);
+        try {
+            val className = new StringBuilder(REPOSITORY_PACKAGE).append(type.getSimpleName())
+                                                                 .append(REPOSITORY)
+                                                                 .toString();
+
+            val repository = (JpaSpecificationExecutor<T>) beanFactory.getBean(Class.forName(className));
+            return repository.findAll(specificationBuilder);
+        } catch (Exception e) {
+            log.error("DATABASE QUERY FAILED - reason: {}", e.getMessage());
+        }
+        return null;
     }
 
     @Override
-    public Collection<T> query(@NonNull Queries queries) {
+    public <T> Collection<T> query(@NonNull Queries queries, @NonNull Class<T> type) {
         // todo - implement
         return null;
     }
