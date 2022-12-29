@@ -14,11 +14,4 @@ public interface SearchService {
      */
     <T> Collection<T> query(Query query, Class<T> type);
 
-    /**
-     * A method for performing more complex queries by combining {@link Query} conditions.
-     * @param queries {@link Query}.
-     * @return Query result.
-     */
-    <T> Collection<T> query(Queries queries, Class<T> Type);
-
 }

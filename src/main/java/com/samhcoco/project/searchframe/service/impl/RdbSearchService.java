@@ -6,6 +6,7 @@ import com.samhcoco.project.searchframe.service.SearchService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 
@@ -39,12 +40,6 @@ public class RdbSearchService implements SearchService {
         } catch (Exception e) {
             log.error("DATABASE QUERY FAILED - reason: {}", e.getMessage());
         }
-        return null;
-    }
-
-    @Override
-    public <T> Collection<T> query(@NonNull Queries queries, @NonNull Class<T> type) {
-        // todo - implement
         return null;
     }
 }

@@ -8,7 +8,7 @@ insert into vehicle_line(id, name, text_description) values
 (5, 'Trains','Model trains are a rewarding hobby for enthusiasts of all ages. Whether you\'re looking for collectible wooden trains, electric streetcars or locomotives, you\'ll find a number of great choices for any budget within this category. The interactive aspect of trains makes toy trains perfect for young children. The wooden train sets are ideal for children under the age of 5.'),
 (6, 'Trucks and Buses','The Truck and Bus models are realistic replicas of buses and specialized trucks produced from the early 1920s to present. The models range in size from 1:12 to 1:50 scale and include numerous limited edition and several out-of-production vehicles. Materials used include tin, diecast and plastic. All models include a certificate of authenticity from their manufacturers and are a perfect ornament for the home and office.');
 
-/*Sample Data for the vehicle_product table for testing search */
+/*Sample data for the vehicle_product table for testing search - breaks normalisation to ease local testing */
 
 insert into vehicle_product (id, name, vehicle_line_id, manufacturer, price, currency) values
 (1, 'Mercedes-Benz GLC', 1, 'Mercedes-Benz', 45000, "GBP"),

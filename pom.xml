@@ -14,7 +14,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>searchframe</name>
-	<description>Generic database search and filtering template project</description>
+	<description>Database search and filtering project which provides reference and
+		template code for querying some popular databases SQL and NoSQL databases,
+		intended to be as generic and reusable as possible.
+	</description>
 
 	<properties>
 		<java.version>11</java.version>

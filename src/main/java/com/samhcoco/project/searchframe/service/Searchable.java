@@ -1,6 +1,5 @@
 package com.samhcoco.project.searchframe.service;
 
-import com.samhcoco.project.searchframe.model.Queries;
 import com.samhcoco.project.searchframe.model.Query;
 
 import java.util.Collection;
@@ -17,12 +16,5 @@ public interface Searchable<T> {
      * @return Query result.
      */
     Collection<T> query(Query query);
-
-    /**
-     * Performs more complex searching using {@link Queries}.
-     * @param queries {@link Queries}.
-     * @return Query result.
-     */
-    Collection<T> query(Queries queries);
 
 }

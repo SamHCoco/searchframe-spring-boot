@@ -15,8 +15,8 @@ import java.util.List;
 
 import static com.samhcoco.project.searchframe.util.ImportJsonUtil.importJson;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class Listeners {
 
@@ -34,6 +34,4 @@ public class Listeners {
             log.error("Failed to initialise MongoDB data - reason: {}", e.getMessage());
         }
     }
-
-
 }

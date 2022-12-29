@@ -3,7 +3,6 @@ package com.samhcoco.project.searchframe.service.impl;
 import com.samhcoco.project.searchframe.model.Queries;
 import com.samhcoco.project.searchframe.model.VehicleProduct;
 import com.samhcoco.project.searchframe.model.Query;
-import com.samhcoco.project.searchframe.repository.VehicleProductRepository;
 import com.samhcoco.project.searchframe.service.ProductService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,4 @@ public class VehicleProductService implements ProductService<VehicleProduct> {
         return searchService.query(query, VehicleProduct.class);
     }
 
-    @Override
-    public Collection<VehicleProduct> query(@NonNull Queries queries) {
-        return searchService.query(queries, VehicleProduct.class);
-    }
 }
