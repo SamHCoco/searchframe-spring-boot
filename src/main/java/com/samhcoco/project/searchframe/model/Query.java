@@ -9,7 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 public class Query {
     private List<SearchCriteria> searchCriteria;
     private boolean strict;
+    private Page page;
 }

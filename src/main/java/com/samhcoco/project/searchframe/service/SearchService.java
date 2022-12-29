@@ -1,9 +1,6 @@
 package com.samhcoco.project.searchframe.service;
 
-import com.samhcoco.project.searchframe.model.Queries;
 import com.samhcoco.project.searchframe.model.Query;
-
-import java.util.Collection;
 
 public interface SearchService {
 
@@ -12,6 +9,7 @@ public interface SearchService {
      * @param query {@link Query}.
      * @return Query result.
      */
-    <T> Collection<T> query(Query query, Class<T> type);
+    <T> Object query(Query query, Class<T> type);
+
 
 }

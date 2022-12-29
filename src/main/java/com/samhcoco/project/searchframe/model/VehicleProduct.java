@@ -1,8 +1,6 @@
 package com.samhcoco.project.searchframe.model;
 
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,6 +14,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode
+@Builder
 public class VehicleProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,4 +35,5 @@ public class VehicleProduct {
 
     @Column(name = "currency")
     private String currency;
+
 }

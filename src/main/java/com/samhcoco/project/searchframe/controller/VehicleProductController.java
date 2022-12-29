@@ -1,6 +1,6 @@
 package com.samhcoco.project.searchframe.controller;
 
-import com.samhcoco.project.searchframe.model.Queries;
+import com.samhcoco.project.searchframe.model.Page;
 import com.samhcoco.project.searchframe.model.Query;
 import com.samhcoco.project.searchframe.service.impl.VehicleProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +22,11 @@ public class VehicleProductController {
     private final VehicleProductService vehicleProductService;
 
     @PostMapping(VERSION + "/" + RESOURCE + "/query")
-    public ResponseEntity<Object> query(@RequestBody Query query) {
+    public ResponseEntity<Object> query(@RequestBody Query query,
+                                        Page page) {
+        query.setPage(page);
         try {
             return new ResponseEntity<>(vehicleProductService.query(query), OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping(VERSION + "/" + RESOURCE + "/queries")
-    public ResponseEntity<Object> queries(@RequestBody Queries queries) {
-        try {
-            return new ResponseEntity<>(vehicleProductService.query(queries), OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }

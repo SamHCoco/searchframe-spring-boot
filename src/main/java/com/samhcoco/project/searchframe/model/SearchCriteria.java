@@ -11,6 +11,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Builder
 public class SearchCriteria {
     private String field;
     private String value;

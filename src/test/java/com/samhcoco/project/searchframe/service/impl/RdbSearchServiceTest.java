@@ -1,7 +1,6 @@
 package com.samhcoco.project.searchframe.service.impl;
 
 import com.samhcoco.project.searchframe.model.Query;
-import com.samhcoco.project.searchframe.service.impl.RdbSearchService;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
