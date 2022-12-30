@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Mercedes-Benz GLC",
-    "vehicleLine" : 1,
+    "vehicleLineId" : 1,
     "manufacturer" : "Mercedes-Benz",
     "price" : 45000,
     "currency" : "GBP"
@@ -10,7 +10,7 @@
   {
     "id": 2,
     "name": "Mercedes-Benz A-Class",
-    "vehicleLine" : 1,
+    "vehicleLineId" : 1,
     "manufacturer" : "Mercedes-Benz",
     "price" : 30800,
     "currency" : "GBP"
@@ -18,7 +18,7 @@
   {
     "id": 3,
     "name": "Mercedes-Benz C-Class",
-    "vehicleLine" : 1,
+    "vehicleLineId" : 1,
     "manufacturer" : "Mercedes-Benz",
     "price" : 43060,
     "currency" : "GBP"
@@ -26,7 +26,7 @@
   {
     "id": 4,
     "name": "Mercedes-Benz CLS",
-    "vehicleLine" : 1,
+    "vehicleLineId" : 1,
     "manufacturer" : "Mercedes-Benz",
     "price" : 70000,
     "currency" : "EUR"
@@ -34,7 +34,7 @@
   {
     "id": 5,
     "name": "Mercedes-Benz GLB",
-    "vehicleLine" : 1,
+    "vehicleLineId" : 1,
     "manufacturer" : "Mercedes-Benz",
     "price" : 40000,
     "currency" : "EUR"
@@ -42,7 +42,7 @@
   {
     "id": 6,
     "name": "BMW X5",
-    "vehicleLine" : 1,
+    "vehicleLineId" : 1,
     "manufacturer" : "BMW",
     "price" : 61000,
     "currency" : "USD"
@@ -50,7 +50,7 @@
   {
     "id": 7,
     "name": "BMW iX3",
-    "vehicleLine" : 1,
+    "vehicleLineId" : 1,
     "manufacturer" : "BMW",
     "price" : 70000,
     "currency" : "EUR"
@@ -58,7 +58,7 @@
   {
     "id": 8,
     "name": "Cessna 120",
-    "vehicleLine" : 3,
+    "vehicleLineId" : 3,
     "manufacturer" : "Cessna",
     "price" : 30000,
     "currency" : "GBP"
@@ -66,7 +66,7 @@
   {
     "id": 9,
     "name": "Cessna 170",
-    "vehicleLine" : 3,
+    "vehicleLineId" : 3,
     "manufacturer" : "Cessna",
     "price" : 82000,
     "currency" : "EUR"
@@ -74,7 +74,7 @@
   {
     "id": 10,
     "name": "Cessna 162 Skycatcher",
-    "vehicleLine" : 3,
+    "vehicleLineId" : 3,
     "manufacturer" : "Cessna",
     "price" : 5000000,
     "currency" : "USD"
@@ -82,7 +82,7 @@
   {
     "id": 11,
     "name": "Cessna Citation M2",
-    "vehicleLine" : 3,
+    "vehicleLineId" : 3,
     "manufacturer" : "Cessna",
     "price" : 1200000,
     "currency" : "USD"
@@ -90,7 +90,7 @@
   {
     "id": 12,
     "name": "Boeing 787",
-    "vehicleLine" : 3,
+    "vehicleLineId" : 3,
     "manufacturer" : "Boeing",
     "price" : 300500000,
     "currency" : "USD"
@@ -98,7 +98,7 @@
   {
     "id": 13,
     "name": "Airbus A380",
-    "vehicleLine" : 3,
+    "vehicleLineId" : 3,
     "manufacturer" : "Airbus",
     "price" : 300500000,
     "currency" : "USD"

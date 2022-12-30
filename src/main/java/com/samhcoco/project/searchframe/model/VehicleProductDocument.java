@@ -15,7 +15,7 @@ public class VehicleProductDocument {
     @Id
     private int id;
     private String name;
-    private int vehicleLine;
+    private int vehicleLineId;
     private String manufacturer;
     private BigDecimal price;
     private String currency;
