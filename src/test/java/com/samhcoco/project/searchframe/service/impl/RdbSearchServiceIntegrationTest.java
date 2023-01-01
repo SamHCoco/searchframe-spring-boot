@@ -4,6 +4,7 @@ import com.samhcoco.project.searchframe.model.Query;
 import com.samhcoco.project.searchframe.model.SearchCriteria;
 import com.samhcoco.project.searchframe.model.VehicleProduct;
 import com.samhcoco.project.searchframe.repository.VehicleProductRepository;
+import lombok.NonNull;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.samhcoco.project.searchframe.util.ImportJsonUtil.importJson;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -34,22 +37,132 @@ public class RdbSearchServiceIntegrationTest {
     @Autowired
     private VehicleProductRepository vehicleProductRepository;
 
-    public void setupData() throws IOException {
-        vehicleProductRepository.deleteAll();
-        List<VehicleProduct> vehicles = importJson(new ClassPathResource("data/products.json"), VehicleProduct[].class);
-        vehicleProductRepository.saveAll(vehicles);
+    public void setupData() {
+        if (vehicleProductRepository.count() == 0) {
+            try {
+                List<VehicleProduct> vehicles = importJson(new ClassPathResource("data/products.json"), VehicleProduct[].class);
+                vehicleProductRepository.saveAll(vehicles);
+            } catch (IOException e) {
+                fail(e.getMessage());
+            }
+        }
     }
 
     @Test
-    public void testQuery_noPagination_equalAndInRange() throws IOException {
+    public void testQuery_strict_equal() {
+        setupData();
+        val criteria = SearchCriteria.builder()
+                                    .field("name")
+                                    .value("Cessna 170")
+                                    .operation("==")
+                                    .build();
+
+        val query = Query.builder()
+                        .searchCriteria(List.of(criteria))
+                        .strict(true)
+                        .build();
+
+        val expected = listExpectedByIds(Set.of(9));
+        val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
+
+        assertThat(result).hasSize(1);
+        assertResult(result, expected);
+    }
+
+    @Test
+    public void testQuery_strict_lessThan() {
+        setupData();
+        val criteria = SearchCriteria.builder()
+                                    .field("price")
+                                    .value("35000")
+                                    .operation("<")
+                                    .build();
+
+        val query = Query.builder()
+                        .searchCriteria(List.of(criteria))
+                        .strict(true)
+                        .build();
+
+        val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
+        val expected = listExpectedByIds(Set.of(8, 2));
+
+        assertThat(result).hasSize(2);
+        assertResult(result, expected);
+    }
+
+    @Test
+    public void testQuery_strict_lessThanOrEqual() {
+        setupData();
+        val criteria = SearchCriteria.builder()
+                .field("price")
+                .value("30000")
+                .operation("<=")
+                .build();
+
+        val query = Query.builder()
+                .searchCriteria(List.of(criteria))
+                .strict(true)
+                .build();
+
+        val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
+        val expected = listExpectedByIds(Set.of(8));
+
+        assertThat(result).hasSize(1);
+        assertResult(result, expected);
+    }
+
+    @Test
+    public void testQuery_strict_greaterThan() {
+        setupData();
+        val criteria = SearchCriteria.builder()
+                                    .field("price")
+                                    .value("70000")
+                                    .operation(">")
+                                    .build();
+
+        val query = Query.builder()
+                .searchCriteria(List.of(criteria))
+                .strict(true)
+                .build();
+
+        val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
+        val expected = listExpectedByIds(Set.of(9 ,10, 11, 12, 13));
+
+        assertThat(result).hasSize(5);
+        assertResult(result, expected);
+    }
+
+    @Test
+    public void testQuery_strict_greaterThanOrEqual() {
+        setupData();
+        val criteria = SearchCriteria.builder()
+                .field("price")
+                .value("70000")
+                .operation(">")
+                .build();
+
+        val query = Query.builder()
+                        .searchCriteria(List.of(criteria))
+                        .strict(true)
+                        .build();
+
+        val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
+        val expected = listExpectedByIds(Set.of(9 ,10, 11, 12, 13));
+
+        assertThat(result).hasSize(5);
+        assertResult(result, expected);
+    }
+
+    @Test
+    public void testQuery_strict_equalAndInRange() throws IOException {
         setupData();
         val query = Query.builder()
                          .searchCriteria(List.of(
                                  SearchCriteria.builder()
-                                         .field(MANUFACTURER)
-                                         .value("Mercedes-Benz")
-                                         .operation("==")
-                                         .build(),
+                                               .field(MANUFACTURER)
+                                               .value("Mercedes-Benz")
+                                               .operation("==")
+                                               .build(),
                                 SearchCriteria.builder()
                                               .field(PRICE)
                                               .value("30000")
@@ -64,20 +177,38 @@ public class RdbSearchServiceIntegrationTest {
                            .build();
 
         val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
-        val expected = listAllTestData().values().stream()
-                                                 .filter(v -> List.of(1, 2, 3, 5).contains(v.getId()))
-                                                 .collect(Collectors.toList());
+        val expected = listExpectedByIds(Set.of(1, 2, 3, 5));
 
+        assertThat(result).hasSize(4);
+        assertResult(result, expected);
+    }
+
+    /**
+     * Performs test assertion for query search result.
+     * @param result {@link VehicleProduct} query result produced by a given test.
+     * @param expectedList Expected {@link VehicleProduct} for a given test.
+     */
+    private void assertResult(@NonNull List<VehicleProduct> result, @NonNull List<VehicleProduct> expectedList) {
         result.forEach(r -> {
-            val expectedVehicle = expected.stream()
-                                    .filter(e -> e.getId() == r.getId())
-                                    .findFirst()
-                                    .orElse(null);
+            val expectedVehicle = expectedList.stream()
+                    .filter(e -> e.getId() == r.getId())
+                    .findFirst()
+                    .orElse(null);
 
             assertThat(expectedVehicle).isNotNull();
             assertThat(r).isEqualTo(expectedVehicle);
         });
+    }
 
+    /**
+     * Returns the {@link VehicleProduct} specified by id.
+     * @param ids {@link VehicleProduct} ids.
+     * @return List of {@link VehicleProduct}s.
+     */
+    private List<VehicleProduct> listExpectedByIds(@NonNull Set<Integer> ids) {
+        return listAllTestData().values().stream()
+                .filter(v -> ids.contains(v.getId()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -202,8 +333,6 @@ public class RdbSearchServiceIntegrationTest {
                 .price(new BigDecimal("300500000.00"))
                 .currency("USD")
                 .build());
-
         return data;
     }
-
 }
