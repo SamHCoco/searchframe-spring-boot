@@ -13,6 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import static com.samhcoco.project.searchframe.constant.SearchOperations.*;
+import static java.util.Objects.isNull;
 
 /**
  * Builds a {@link Specification} from the given {@link Query}.
@@ -27,8 +28,16 @@ public class SpecificationBuilder<T> implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        if (isNull(searchQuery.getSearchCriteria())) {
+            log.error("Failed to create database query specification: SearchCriteria cannot be null.");
+            return null;
+        }
+
         val searchCriteria = searchQuery.getSearchCriteria();
-        if (searchCriteria.isEmpty()) return null;
+        if (searchCriteria.isEmpty()) {
+            log.error("Failed to create database query specification: SearchCriteria cannot be empty.");
+            return null;
+        }
 
         val predicates = new Predicate[searchCriteria.size()];
 
@@ -52,8 +61,10 @@ public class SpecificationBuilder<T> implements Specification<T> {
                     predicates[i] = criteriaBuilder.lessThanOrEqualTo(root.get(criteria.getField()), criteria.getValue());
                     break;
                 case LIKE:
-                    // '%' used as wildcards i.e. - if the field at least contains the given value, a match is returned.
-                    predicates[i] = criteriaBuilder.like(root.get(criteria.getField()), "%" + criteria.getValue() + "%");
+                    // '%' used as wildcards i.e. - if the field contains the given value as a substring, a match is returned.
+                    // criteriaBuilder.lower() used to create case-insensitive matching
+                    predicates[i] = criteriaBuilder.like(criteriaBuilder.lower(root.get(criteria.getField())) ,
+                                                                            "%" + criteria.getValue().toLowerCase() + "%");
                     break;
                 default:
                     log.error("Required valid search operation missing for search query: {}", searchQuery);

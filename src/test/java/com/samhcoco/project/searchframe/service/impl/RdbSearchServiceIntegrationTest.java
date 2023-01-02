@@ -30,6 +30,7 @@ public class RdbSearchServiceIntegrationTest {
 
     private static final String MANUFACTURER = "manufacturer";
     private static final String PRICE = "price";
+    private static final String NAME = "name";
 
     @Autowired
     private RdbSearchService searchService;
@@ -52,7 +53,7 @@ public class RdbSearchServiceIntegrationTest {
     public void testQuery_strict_equal() {
         setupData();
         val criteria = SearchCriteria.builder()
-                                    .field("name")
+                                    .field(NAME)
                                     .value("Cessna 170")
                                     .operation("==")
                                     .build();
@@ -73,7 +74,7 @@ public class RdbSearchServiceIntegrationTest {
     public void testQuery_strict_lessThan() {
         setupData();
         val criteria = SearchCriteria.builder()
-                                    .field("price")
+                                    .field(PRICE)
                                     .value("35000")
                                     .operation("<")
                                     .build();
@@ -94,15 +95,15 @@ public class RdbSearchServiceIntegrationTest {
     public void testQuery_strict_lessThanOrEqual() {
         setupData();
         val criteria = SearchCriteria.builder()
-                .field("price")
-                .value("30000")
-                .operation("<=")
-                .build();
+                                    .field(PRICE)
+                                    .value("30000")
+                                    .operation("<=")
+                                    .build();
 
         val query = Query.builder()
-                .searchCriteria(List.of(criteria))
-                .strict(true)
-                .build();
+                        .searchCriteria(List.of(criteria))
+                        .strict(true)
+                        .build();
 
         val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
         val expected = listExpectedByIds(Set.of(8));
@@ -115,7 +116,7 @@ public class RdbSearchServiceIntegrationTest {
     public void testQuery_strict_greaterThan() {
         setupData();
         val criteria = SearchCriteria.builder()
-                                    .field("price")
+                                    .field(PRICE)
                                     .value("70000")
                                     .operation(">")
                                     .build();
@@ -136,7 +137,7 @@ public class RdbSearchServiceIntegrationTest {
     public void testQuery_strict_greaterThanOrEqual() {
         setupData();
         val criteria = SearchCriteria.builder()
-                .field("price")
+                .field(PRICE)
                 .value("70000")
                 .operation(">")
                 .build();
@@ -180,6 +181,26 @@ public class RdbSearchServiceIntegrationTest {
         val expected = listExpectedByIds(Set.of(1, 2, 3, 5));
 
         assertThat(result).hasSize(4);
+        assertResult(result, expected);
+    }
+
+    @Test
+    public void testQuery_strict_like() {
+        setupData();
+        val query = Query.builder()
+                .searchCriteria(List.of(
+                        SearchCriteria.builder()
+                                .field(NAME)
+                                .value("x")
+                                .operation("like")
+                                .build()
+                )).strict(true)
+                .build();
+
+        val result = (List<VehicleProduct>) searchService.query(query, VehicleProduct.class);
+        val expected = listExpectedByIds(Set.of(6, 7));
+
+        assertThat(result).hasSize(2);
         assertResult(result, expected);
     }
 
